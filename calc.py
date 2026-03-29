@@ -49,7 +49,7 @@ while True:
         symbol = "-"
     elif choice == "3":
         result = multiply(num1,num2)
-        symbol = "*"
+        symbol = "* "
     elif choice == "4":
         result = divide(num1,num2)
         symbol = "/"
