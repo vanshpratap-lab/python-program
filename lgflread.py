@@ -1,4 +1,10 @@
-f =  open('myfile.txt', 'r')
-
-print(f.readline())
+f =  open('log.txt', 'r')
+line1 = f.readline()
+print(f"line1 : {line1}")
+print(f.tell())
+line2 = f.readline()
+print(f"line2 : {line2}")
+print(f.tell())
+line3 = f.readline()
+print(f"line3 : {line3}")
 print(f.tell())
