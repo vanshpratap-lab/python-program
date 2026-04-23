@@ -58,47 +58,50 @@
 
 
 from functools import reduce
+
 FILE_NAME = "expense.txt"
 
+
 def add_expense():
-    types = input("please enter your expense")
-    cost = int(input("please enter your cost"))
+    types = input("Enter expense type: ")
+    cost = int(input("Enter amount: "))
 
-    with open(FILE_NAME,'a') as f:
-        f.write(f"{types};{cost}")
+    with open(FILE_NAME, 'a') as f:
+        f.write(f"{types};{cost}\n")
 
-    print("expense added")
+    print("✅ Expense added!\n")
+
 
 def view_expense():
     try:
-        with open(FILE_NAME, 'r') as g:
-            lines = g.readlines()
+        with open(FILE_NAME, 'r') as f:
+            lines = f.readlines()
 
             if not lines:
-                print("no expense found")
+                print("No expenses found.\n")
                 return
-            
-            print("all expenses: ")
-            for line in line:
+
+            print("\n📄 All Expenses:")
+            for line in lines:
                 line = line.strip()
-                if not lines:
+                if not line:
                     continue
 
                 parts = line.split(';')
                 print(f"{parts[0]} : {parts[1]}")
             print()
+
     except FileNotFoundError:
-        print("no file found")
+        print("No file found. Add expenses first.\n")
+
 
 def show_total():
     cost_list = []
-    try:
-        with open(FILE_NAME, 'r') as h:
-            lines = h.readlines()
 
-            if not lines:
-                print("no expense found ")
-                return
+    try:
+        with open(FILE_NAME, 'r') as f:
+            lines = f.readlines()
+
             for line in lines:
                 line = line.strip()
                 if not line:
@@ -106,21 +109,22 @@ def show_total():
 
                 parts = line.split(';')
                 cost_list.append(int(parts[1]))
-    
-        total = reduce(lambda a,b : a+b , cost_list) if cost_list else 0
-        print(f"total : {total}")
+
+        total = reduce(lambda a, b: a + b, cost_list) if cost_list else 0
+        print(f"\n💰 Total Expense: {total}\n")
+
     except FileNotFoundError:
-        print("no file found")
+        print("No file found. Add expenses first.\n")
 
 
 def filter_expense():
     expense_list = []
 
     try:
-        limit = int(input("show expense greate than: "))
+        limit = int(input("Show expenses greater than: "))
 
-        with open(FILE_NAME,'r') as i:
-            lines = i.readlines()
+        with open(FILE_NAME, 'r') as f:
+            lines = f.readlines()
 
             for line in lines:
                 line = line.strip()
@@ -130,28 +134,30 @@ def filter_expense():
                 parts = line.split(';')
                 expense_list.append((parts[0], int(parts[1])))
 
-            filtered = list(filter(lambda x : x[1] > limit, expense_list))
+        filtered = list(filter(lambda x: x[1] > limit, expense_list))
 
-            if not filtered:
-                print("no matching expense")
-                return
-            
-            print("filtered expense: ")
-            for item in filtered:
-                print(f"{item[0]}:{item[1]}")
-            print()
+        if not filtered:
+            print("No matching expenses.\n")
+            return
+
+        print("\n🔍 Filtered Expenses:")
+        for item in filtered:
+            print(f"{item[0]} : {item[1]}")
+        print()
 
     except FileNotFoundError:
-        print("no file found: ")
+        print("No file found. Add expenses first.\n")
 
+
+# 🔁 Main Menu Loop
 while True:
-    print("1. add expense")
-    print("2. view expense")
-    print("3. show expense")
-    print("4. total expense")
-    print("5. exit")
+    print("1. Add Expense")
+    print("2. View Expenses")
+    print("3. Show Total")
+    print("4. Filter Expenses")
+    print("5. Exit")
 
-    choice = input("enter your choice: ")
+    choice = input("Enter your choice: ")
 
     if choice == "1":
         add_expense()
@@ -161,16 +167,16 @@ while True:
 
     elif choice == "3":
         show_total()
-        
+
     elif choice == "4":
         filter_expense()
 
     elif choice == "5":
-        print("exiting....goodbye")
+        print("👋 Exiting... Goodbye!")
         break
 
     else:
-        print("invalid try again")
+        print("❌ Invalid choice. Try again.\n")
 
 
             
