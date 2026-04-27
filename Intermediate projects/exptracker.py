@@ -148,6 +148,40 @@ def filter_expense():
     except FileNotFoundError:
         print("No file found. Add expenses first.\n")
 
+def delete_expense():
+    try:
+        with open(FILE_NAME, 'r') as f:
+            lines = f.readlines()
+        
+        if not lines:
+            print("no expense to delete")
+            return 
+        print("expense : ")
+        for i, line in enumerate(lines):
+            line = line.strip()
+            if not line:
+                continue
+            print(f"{i} : {line}")
+        
+        index = int(input("enter index to delete : "))
+
+        if index < 0 or index >= len(lines):
+            print("invalid index")
+            return
+        deleted = lines.pop(index)
+
+        with open(FILE_NAME, "w") as f:
+            f.writelines(lines)
+
+            print(f"deleted : {deleted.strip()}\n")
+
+    except FileNotFoundError : 
+        print("no file found")
+
+    except ValueError :
+        print("invalid input")
+
+
 
 # 🔁 Main Menu Loop
 while True:
@@ -155,7 +189,8 @@ while True:
     print("2. View Expenses")
     print("3. Show Total")
     print("4. Filter Expenses")
-    print("5. Exit")
+    print("5. delete Expenses")
+    print("6. Exit")
 
     choice = input("Enter your choice: ")
 
@@ -172,6 +207,9 @@ while True:
         filter_expense()
 
     elif choice == "5":
+        delete_expense()
+
+    elif choice == "6":
         print("👋 Exiting... Goodbye!")
         break
 
