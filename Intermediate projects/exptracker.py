@@ -181,6 +181,17 @@ def delete_expense():
     except ValueError :
         print("invalid input")
 
+def edit_expense():
+    with open(FILE_NAME,'r') as f :
+        lines = f.writelines()
+
+    if not lines:
+        print("no expense to edit")
+        return
+    
+    print()
+
+
 
 
 # 🔁 Main Menu Loop
