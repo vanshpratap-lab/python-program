@@ -182,14 +182,31 @@ def delete_expense():
         print("invalid input")
 
 def edit_expense():
-    with open(FILE_NAME,'r') as f :
-        lines = f.writelines()
+    try:
+        with open(FILE_NAME,'r') as f:
+            lines = f.readlines()
+        
+        if not lines:
+            print("no expense to edit")
+            return
+        
+        print("expenses : ")
+        for i, line in enumerate(lines):
+            line = line.strip()
+            if not line:
+                continue
+            print(f"{i} : {line}")
 
-    if not lines:
-        print("no expense to edit")
-        return
-    
-    print()
+        index = int(input("enter index to edit : "))
+
+        if index < 0 or index >= len(lines):
+            print("incoorect")
+            return
+        
+        new_types = input("enter your new type : ")
+        new_cost = int(input("enter new amount : "))
+
+
 
 
 
