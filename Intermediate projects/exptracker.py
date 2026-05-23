@@ -183,32 +183,50 @@ def delete_expense():
 
 def edit_expense():
     try:
-        with open(FILE_NAME,'r') as f:
+        # 1. Read all lines from the file into a list (in-memory)
+        with open(FILE_NAME, 'r') as f:
             lines = f.readlines()
         
         if not lines:
-            print("no expense to edit")
+            print("No expenses to edit.\n")
             return
         
-        print("expenses : ")
+        # 2. Show expenses with index numbers using enumerate()
+        print("\n📄 Select an expense to edit:")
         for i, line in enumerate(lines):
-            line = line.strip()
-            if not line:
-                continue
-            print(f"{i} : {line}")
+            # line.strip() removes the newline character for display
+            print(f"{i} : {line.strip()}")
 
-        index = int(input("enter index to edit : "))
+        # 3. Ask user which index to edit
+        # 8. ValueError will be caught if input is not an integer
+        index = int(input("\nEnter index to edit: "))
 
+        # 4. Validate index properly
         if index < 0 or index >= len(lines):
-            print("incoorect")
+            print("❌ Invalid index!\n")
             return
         
-        new_types = input("enter your new type : ")
-        new_cost = int(input("enter new amount : "))
+        # 5. Ask for new data
+        new_type = input("Enter new expense type: ")
+        new_amount = int(input("Enter new amount: "))
 
+        # 6. Replace the selected line in the 'lines' list (memory)
+        # We must include the semicolon and the newline character \n
+        lines[index] = f"{new_type};{new_amount}\n"
 
+        # 7. Rewrite the whole file using writelines()
+        # Using 'w' mode overwrites the entire file with our updated list
+        with open(FILE_NAME, "w") as f:
+            f.writelines(lines)
 
+        print("✅ Expense updated successfully!\n")
 
+    except FileNotFoundError:
+        # 8. Handle case where file doesn't exist yet
+        print("❌ No file found. Add expenses first.\n")
+    except ValueError:
+        # 8. Handle case where user enters non-numeric data
+        print("❌ Invalid input. Please enter numbers for index and amount.\n")
 
 
 # 🔁 Main Menu Loop
@@ -217,8 +235,9 @@ while True:
     print("2. View Expenses")
     print("3. Show Total")
     print("4. Filter Expenses")
-    print("5. delete Expenses")
-    print("6. Exit")
+    print("5. Delete Expenses")
+    print("6. Edit Expense")
+    print("7. Exit")
 
     choice = input("Enter your choice: ")
 
@@ -238,6 +257,9 @@ while True:
         delete_expense()
 
     elif choice == "6":
+        edit_expense()
+
+    elif choice == "7":
         print("👋 Exiting... Goodbye!")
         break
 
